@@ -18,6 +18,8 @@ function Alphabetizer()
     {
         return this.alphaShifts.length;
     };
+    
+    
 }
 
 function CircularShift()
@@ -50,6 +52,19 @@ function CircularShift()
     this.getNumLines = function()
     {
         return this.shifts.length;  
+    };
+    
+    this.print = function()
+    {
+        var n;
+        var out = '<h3>Circular Shifts: </h3>';
+        document.getElementById("circularshifts").innerHTML += out;
+        for(n=0; n<this.shifts.length; n++)
+        {
+            var i = n+1;
+            out = '<p>' + i + '. ' + this.shifts[n] + '</p>';
+            document.getElementById("circularshifts").innerHTML += out;
+        }
     };
        
 }
@@ -104,6 +119,19 @@ function LineStorage()
         return this.lines.length;
     };
     
+    this.print = function()
+    {
+        var n;
+        var out = '<h3>Line Storage: </h3>';
+        document.getElementById("linestorage").innerHTML += out;
+        for(n=0; n<this.lines.length; n++)
+        {
+            var i = n+1;
+            out = '<p>' + i + '. ' + this.lines[n] + '</p>';
+            document.getElementById("linestorage").innerHTML += out;
+        }
+    };
+    
 }
 
 
@@ -116,20 +144,22 @@ function Input()
         // Get input from HTML text input box
         var input = document.input.inputBox.value;
 
-        // Parse input by newline delimiter "$" and store each line in array
+        // Parse input by newline delimiter "\n" and store each line in array
         var lines = input.split("\n");
-                
+
         // For each line in lines array
         var l;
         var w;
         for(l=0; l < lines.length; l++)
         {
+            //if(lines[l] == "") {lines.splice(l, 1); continue;}
+
             // Add line to 1-D lineStorage array
             this.lineStorage.addLine(l, lines[l]);
             
             // Split line l into words and store in words array
             var words = lines[l].split(" ");
-            
+
             // For each word in words array
             for(w=0; w < words.length; w++)
             {
@@ -137,6 +167,7 @@ function Input()
                 this.lineStorage.addWord(l, w, words[w]);
             }
         }
+        this.lineStorage.print();
         return this.lineStorage;
     };
 }
@@ -146,9 +177,12 @@ function Output()
     this.print = function(alpha)
     {
         var n;
+        var out = '<h3>Alphabetized: </h3>';
+        document.getElementById("output").innerHTML += out;
         for(n=0; n < alpha.getNumLines(); n++)
         {
-            var out = '<p>' + alpha.getLine(n) + '</p>';
+            var i = n+1;
+            out = '<p>' + i + '. ' + alpha.getLine(n) + '</p>';
             document.getElementById("output").innerHTML += out;
         }
         
@@ -158,6 +192,8 @@ function Output()
 function Main()
 {
     // Clear previous output from the screen
+    document.getElementById("linestorage").innerHTML = " ";
+    document.getElementById("circularshifts").innerHTML = " ";
     document.getElementById("output").innerHTML = " ";
     
     var storage = new Input();
@@ -165,6 +201,7 @@ function Main()
     
     var circular = new CircularShift();
     circular.setup(storage.lineStorage);
+    circular.print();
     
     var sorted = new Alphabetizer();
     sorted.alpha(circular);
