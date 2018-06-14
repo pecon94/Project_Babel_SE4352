@@ -7,7 +7,10 @@ function Alphabetizer()
     // Alphabetize circular shifts
     this.alpha = function(circular)
     {
-        this.alphaShifts = circular.shifts.sort();
+        this.alphaShifts = circular.shifts.sort(function(a,b)
+        {
+            return a.toLowerCase().localeCompare(b.toLowerCase());    
+        });
     };
     
     // Function to return sorted shift at index l
