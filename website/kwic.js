@@ -1,3 +1,4 @@
+// Module to sort circular shifts from CircularShifter in alphabetical order
 function Alphabetizer() 
 {
     // 1-D array to store circular shifts in alphabetical order
@@ -9,23 +10,26 @@ function Alphabetizer()
         this.alphaShifts = circular.shifts.sort();
     };
     
+    // Function to return sorted shift at index l
     this.getLine = function(l)
     {  
         return this.alphaShifts[l];
     };
     
+    // Function to return number of sorted lines in Alphabetizer 
     this.getNumLines = function()
     {
         return this.alphaShifts.length;
     };
-    
-    
 }
 
+// Module to produce circular shifts of lines stored in LineStorage
 function CircularShift()
 {
+    // 1-D array to store circular shifts of lines from LineStorage
     this.shifts = [];
     
+    // Function to perform circular shifts of lines from LineStorage
     this.setup = function(storage)
     {
         var l;
@@ -44,16 +48,19 @@ function CircularShift()
         }
     };
     
+    // Function to return circular shift at index l
     this.getLine = function(l)
     {
         return this.shifts[l];
     };
     
+    // Function to return number of circular shifts
     this.getNumLines = function()
     {
         return this.shifts.length;  
     };
     
+    // Function to output unsorted circular shifts for demonstration purposes
     this.print = function()
     {
         var n;
@@ -69,7 +76,7 @@ function CircularShift()
        
 }
 
-
+// Module to store all characters, words, and lines from Input
 function LineStorage()
 {
     // 1-D array to store original lines
@@ -119,6 +126,7 @@ function LineStorage()
         return this.lines.length;
     };
     
+    // Function to output LineStorage contents for demonstration purposes
     this.print = function()
     {
         var n;
@@ -134,9 +142,10 @@ function LineStorage()
     
 }
 
-
+// Module to read data from HTML Input box and store in LineStorage object
 function Input()
 {
+    // Create a new LineStorage object 
     this.lineStorage = new LineStorage();
     
     this.parse = function()
@@ -167,11 +176,13 @@ function Input()
                 this.lineStorage.addWord(l, w, words[w]);
             }
         }
+        
         this.lineStorage.print();
         return this.lineStorage;
     };
 }
 
+// Module to output sorted shifts from CircularShift
 function Output()
 {
     this.print = function(alpha)
@@ -185,10 +196,10 @@ function Output()
             out = '<p>' + i + '. ' + alpha.getLine(n) + '</p>';
             document.getElementById("output").innerHTML += out;
         }
-        
     };
 }
 
+// Main control module to invoke Input, LineStorage, CircularShift, Alphabetizer, and Output. Invoked by HTML submit button. 
 function Main()
 {
     // Clear previous output from the screen
@@ -196,17 +207,30 @@ function Main()
     document.getElementById("circularshifts").innerHTML = " ";
     document.getElementById("output").innerHTML = " ";
     
+    // Create new Input object
     var storage = new Input();
+    
+    // Parse input by line and store in LineStorage object
     storage.parse();
     
+    // Create new CircularShift object
     var circular = new CircularShift();
+    
+    // Perform circular shifts on lines from Input's LineStorage
     circular.setup(storage.lineStorage);
+    
+    // Print circular shifts for demonstration purposes
     circular.print();
     
+    // Create new alphabetizer object
     var sorted = new Alphabetizer();
+    
+    // Perform sorting of circular shifts from CircularShifter
     sorted.alpha(circular);
     
+    // Create new Output object
     var out = new Output();
-    out.print(sorted);
     
+    // Print sorted CircularShifts to the HTML DOM
+    out.print(sorted);
 }
